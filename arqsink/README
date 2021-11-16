@@ -1,0 +1,38 @@
+1. Summary
+
+arqsource recieves datagramms, adds new header (13 bytes) and transmits them to arqsink
+Lost packets are waited for 1 sec. Frequency of NACK repeat transmission depends on RTT between arqsource and arqsink. So for 1 sec we can achieve round(1000/rtt) NACK repeats.
+
+2. Options
+
+-ip 		sink ip address (e.g., 127.0.0.1)
+-port		sink port (e.g, 5010)
+-port_vlc	video port
+-ip_s		source ip address 
+-port_s		source port
+-ploss		artificial packet loss ratio for video packets (double)
+-lb		artificial lost packet burst length
+-bsize		max playback buffer length
+-btime		max playback buffer delay (msec) max = 4000 ms
+-tm		plr calcualtion interval
+-timeout	poll timeout, can influence on CPU usage and packet loss (msec)	
+-noarq		disable arq in the arqsink (default = true)
+
+Example:
+	
+./arqsource -tm 100 -btime 100
+
+Output:
+source=127.0.0.1:5010 my_peer=127.0.0.1:5018/5019 ploss=0.0000 lb=0.00 tm=100 btime=0.10 bsize=134 timeout=1.00 arq=true
+Waiting for video... 
+
+ESC or Ctrl+D to exit.
+
+3. Files
+
+/N.txt					contains file number for statistics
+Res/Source/test_#_log.txt		sink log file
+Res/Source/test_#_plr_corr.txt		packet loss ratio after ARQ
+Res/Source/test_#_plr_pure.txt		pure packet loss ratio
+Res/Source/test_#_stat_corr.txt		packet bundle stats after ARQ
+Res/Source/test_#_stat_pure.txt		pure packet bundle stats ratio
